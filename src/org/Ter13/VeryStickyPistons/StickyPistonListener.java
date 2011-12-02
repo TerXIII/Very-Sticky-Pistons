@@ -16,14 +16,20 @@ import org.bukkit.material.PistonBaseMaterial;
 public class StickyPistonListener extends BlockListener
 {
 	public VeryStickyPistons vspp;
+	public boolean isEnabled;
 	
 	public StickyPistonListener(VeryStickyPistons pg)
 	{
 		vspp = pg;
+		isEnabled = false;
 	}
 
 	public void onBlockPistonExtend(BlockPistonExtendEvent event)
 	{	
+		if(!isEnabled)
+		{
+			return;
+		}
 		Block tb;
 		PistonBaseMaterial tp;
 
@@ -64,7 +70,7 @@ public class StickyPistonListener extends BlockListener
 			{
 				if(!moving.contains(ta))
 				{
-					if((ta.getType()==Material.PISTON_STICKY_BASE&&ta.getBlockPower()==0)||ta.getPistonMoveReaction()!=PistonMoveReaction.BLOCK)
+					if(((ta.getType()==Material.PISTON_STICKY_BASE||ta.getType()==Material.PISTON_BASE)&&ta.getBlockPower()==0)||ta.getPistonMoveReaction()!=PistonMoveReaction.BLOCK)
 					{
 						tm = ta.getRelative(event.getDirection(),1);
 						if(tm.isEmpty()||moving.contains(tm))
@@ -116,6 +122,10 @@ public class StickyPistonListener extends BlockListener
 
 	public void onBlockPistonRetract(BlockPistonRetractEvent event)
 	{
+		if(!isEnabled)
+		{
+			return;
+		}
 		Block tb;
 		PistonBaseMaterial tp;
 
@@ -153,7 +163,7 @@ public class StickyPistonListener extends BlockListener
 					{
 						if(!moving.contains(ta))
 						{
-							if((ta.getType()==Material.PISTON_STICKY_BASE&&ta.getBlockPower()==0)||ta.getPistonMoveReaction()==PistonMoveReaction.MOVE)
+							if(((ta.getType()==Material.PISTON_STICKY_BASE||ta.getType()==Material.PISTON_BASE)&&ta.getBlockPower()==0)||ta.getPistonMoveReaction()==PistonMoveReaction.MOVE)
 							{
 								tm = ta.getRelative(event.getDirection().getOppositeFace(),1);
 								if(tm.isEmpty()||moving.contains(tm))
